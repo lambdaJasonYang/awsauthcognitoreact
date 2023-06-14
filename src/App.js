@@ -63,8 +63,17 @@ const signUpConfirmAWS = async () => {
   console.log(outcome)
 }
 
+const [getjwtToken,setjwtToken] = useState()
 
+const jwtAWS = async () => {
+  const session = await Auth.currentSession();
+  const jwtToken = session.getIdToken().getJwtToken();
+  setjwtToken(jwtToken)
+  // console.log(jwtToken)
+}
 const [getcurrentUserInfo,setcurrentUserInfo] = useState()
+
+
 
   return (
     <div className="App">
@@ -86,6 +95,7 @@ const [getcurrentUserInfo,setcurrentUserInfo] = useState()
         <button onClick={() => {signUpConfirmAWS()}}> verify email </button>
         <button onClick={() => {signInAWS()}}>sign in </button>
         <button onClick={() => {Auth.currentUserInfo().then((v)=>setcurrentUserInfo(v))}}>Auth.currentUserInfo()</button>      
+        <button onClick={() => {jwtAWS()}}>Auth.currentSession().getIdToken().getJwtToken()</button>
         <button onClick={() => {Auth.signOut()}}>Auth.signout</button>
       </div>
       <div>
@@ -102,6 +112,10 @@ const [getcurrentUserInfo,setcurrentUserInfo] = useState()
       <fieldset>
         Auth.currentUserInfo(): 
         <textarea value={JSON.stringify(getcurrentUserInfo,null,"\t")}/>
+      </fieldset>
+      <fieldset>
+      This is your jwt token Auth.currentSession().getIdToken().getJwtToken(): 
+        <textarea value={getjwtToken}/>
       </fieldset>
     </div>
   );
